@@ -1,0 +1,6 @@
+vut\feec\bpc\MainController.class
+module-info.class
+vut\feec\bpc\PwdHash.class
+vut\feec\bpc\DBConnect.class
+vut\feec\bpc\Auth.class
+vut\feec\bpc\MainWindow.class
