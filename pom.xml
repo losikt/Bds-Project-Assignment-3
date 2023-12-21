@@ -74,7 +74,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>vut.feec.bpc/vut.feec.bpc.MainWindow</mainClass>
+                            <mainClass>vut.feec.bpc/vut.feec.bpc.LoginWindow</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

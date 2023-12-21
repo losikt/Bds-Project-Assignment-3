@@ -13,22 +13,31 @@ public class PwdHash {
         Argon2 argon2 = Argon2Factory.create();
         return argon2.hash(10, 65536, 1, pwd.toCharArray());
     }
-    public static Boolean validCredentials (Connection conn, String username, String pwd){
-        String sql = "select password from bds.users where username = ?";
+    public static int validCredentials(Connection conn, String username, String pwd) {
+        String sql = "SELECT u.user_id, u.password, ura.role_id " +
+                "FROM bds.users u " +
+                "JOIN bds.user_role_assignments ura ON u.user_id = ura.user_id " +
+                "WHERE u.username = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, username );
+            pstmt.setString(1, username);
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 String pwdHash = rs.getString("password");
+                int roleId = rs.getInt("role_id"); // Get the role ID
+
                 Argon2 argon2 = Argon2Factory.create();
-                return argon2.verify(pwdHash, pwd.toCharArray());
+                if (argon2.verify(pwdHash, pwd.toCharArray())) {
+                    return roleId; // Return role ID on successful login
+                } else {
+                    return -1; // Return -1 on password mismatch
+                }
             } else {
-                return false;
+                return -1; // Return -1 if username not found
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1; // Return -1 on exception
         }
     }
 }
